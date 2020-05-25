@@ -5,10 +5,10 @@
 database name : 17CE
 
 
-table name : main_information
-*column definition :
-    *URL 網址 char
-    *時間    date	datetime
+`table name : main_information`
+column definition :
+    URL 網址 char
+    時間    date	datetime
     線路    line	char
     最快節點	Fastest node    float
     最快節點秒數	Fastest node seconds    float
