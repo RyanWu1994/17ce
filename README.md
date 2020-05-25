@@ -9,17 +9,17 @@ table name : main_information
 * column definition :
    * URL 網址 char
    * 時間    date	datetime
-    線路    line	char
-    最快節點	Fastest node    float
-    最快節點秒數	Fastest node seconds    float
-    最慢節點	Slowest node    float
-    最慢節點秒數	Slowest node seconds    float
-    平均響應    Average response    float
+   * 線路    line	char
+   * 最快節點	Fastest node    float
+   * 最快節點秒數	Fastest node seconds    float
+   * 最慢節點	Slowest node    float
+   * 最慢節點秒數	Slowest node seconds    float
+   * 平均響應    Average response    float
 
 table name : node_information
 column definition :
     URL 網址 char
-    時間    date	datetime
+    時間    date	datetime 
     监测点
     ISP
     省份
@@ -34,3 +34,4 @@ column definition :
     文件大小
     下载大小
     下载速度	
+
