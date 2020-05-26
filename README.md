@@ -22,16 +22,16 @@
    * 時間    Date	datetime 
    * 监测点  Node
    * ISP  ISP
-   * 省份
-   * 解析IP
-   * 解析IP所在地
-   * Http状态
-   * 总时间
-   * 解析时间
-   * 连接时间	
-   * 下载时间
-   * 首字节时间
-   * 文件大小
-   * 下载大小
-   * 下载速度	
+   * 省份   Province
+   * 解析IP IP
+   * 解析IP所在地 DNS_position
+   * Http状态  Ststus
+   * 总时间    Total_time
+   * 解析时间     Resolution_time
+   * 连接时间	   Connection_time
+   * 下载时间     Download_time
+   * 首字节时间   First_byte_time
+   * 文件大小     File_size
+   * 下载大小     Download_size
+   * 下载速度	   Download_speed
 
