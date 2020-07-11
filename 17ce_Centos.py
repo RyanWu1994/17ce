@@ -4,7 +4,7 @@
 # In[ ]:
 
 
-# Get_17CE_version 1.2.0
+# Get_17CE_version 1.3.0 更新:轉型為float與 node 值重複
 
 from sqlalchemy import create_engine
 from collections import Counter
@@ -32,9 +32,13 @@ def SeleniumGetPhoto(URL):
     options.add_argument('--disable-gpu')
     options.add_argument('blink-settings=imagesEnabled=false')
     options.add_argument('--enable-features=OverlayScrollbar')
-
+    
     chromedriver = '/root/chromedriver'
     driver = webdriver.Chrome(executable_path=chromedriver, options=options)
+    
+#     chromedriver = './tools/chromedriver.exe'
+#     driver = webdriver.Chrome(executable_path=chromedriver)
+
     driver.get("https://www.17ce.com/")
     time.sleep(3)
     driver.find_element(By.ID, "nav1").click()
@@ -63,37 +67,26 @@ def Getmain(web,soup,Date):
         try:
             fastestnode = i.find_all("td")[1].find("font",class_="fl").text
         except:
-            fastestnode = "-"
+            continue
 
-        try:
-            fastestsec = i.find_all("td")[1].find("font",class_="fr").text
-        except:
-            fastestsec = "-"
+        fastestsec = i.find_all("td")[1].find("font",class_="fr").text
 
-        try:
-            slowestnode = i.find_all("td")[2].find("font",class_="fl").text
-        except:
-            slowestnode = "-"
+        slowestnode = i.find_all("td")[2].find("font",class_="fl").text
 
-        try:
-            slowestsec = i.find_all("td")[2].find("font",class_="fr").text
-        except:
-            slowestsec = "-"
+        slowestsec = i.find_all("td")[2].find("font",class_="fr").text
 
-        try:
-            average = i.find_all("td")[3].find("font",class_="fr").text
-        except:
-            average = "-"
+        average = i.find_all("td")[3].find("font",class_="fr").text
+
 
         result_dict = {
                 "URL":web,
                 "Date":Date,
                 "Line":line,
                 "Fastest_node":fastestnode,
-                "Fastest_node_seconds":fastestsec,
+                "Fastest_node_seconds":float(fastestsec.replace("s","")),
                 "Slowest_node":slowestnode,
-                "Slowest_node_seconds":slowestsec,
-                "Average_response":average
+                "Slowest_node_seconds":float(slowestsec.replace("s","")),
+                "Average_response":float(average.replace("s",""))
             }
 
         main_result.append(result_dict)
@@ -108,17 +101,13 @@ def Getnode(web,soup,Date):
     node_table = soup.find("table",{"id":"tblSort"})
     table_tr = node_table.find_all("tr")
 
-    count = 0
+
 
     for tr in table_tr[2:]:
-        count += 1
 
         for number,content in enumerate(tr):
 
-            if content.text == "":
-                continue
-
-            else:
+            try:
 
                 if number == 0:
                     Node = content.text
@@ -162,6 +151,12 @@ def Getnode(web,soup,Date):
                 elif number == 13:
                     Download_speed = content.text
 
+            except:
+                continue
+
+        if DNS_position == "*" or Node == "":
+            continue
+
         node_dict = {
             "URL" : web,
             "Date" : time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
@@ -171,11 +166,11 @@ def Getnode(web,soup,Date):
             "IP" : IP,
             "DNS_position" : DNS_position,
             "Ststus" : Ststus,
-            "Total_time" : Total_time,
-            "Resolution_time" : Resolution_time,
-            "Connection_time" : Connection_time,
-            "Download_time" : Download_time,
-            "First_byte_time" : First_byte_time,
+            "Total_time" : float(Total_time.replace("s","")),
+            "Resolution_time" : float(Resolution_time.replace("s","")),
+            "Connection_time" : float(Connection_time.replace("s","")),
+            "Download_time" : float(Download_time.replace("s","")),
+            "First_byte_time" : float(First_byte_time.replace("s","")),
             "File_size" : File_size,
             "Download_size" : Download_size,
             "Download_speed" : Download_speed
@@ -231,34 +226,4 @@ for URL in URL_list:
     List_to_mysql(user=user,passwd=passwd,ip=ip,db_name=db_name,table_name="node_information",result_list=node_result)
     print(URL ," - node_result -"," insert mysql...done") 
     
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
